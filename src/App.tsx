@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback } from "react";
+import "./App.css";
+import TODO from "./components/todo";
+import AddItem from "./components/add-Item";
 
-function App() {
+const App: React.FC = () => {
+  let [items, setItems] = useState<{ id: number; name: string }[]>([
+    { id: 1, name: "Football" },
+    { id: 2, name: "BasketBall" }
+  ]);
+
+  let addToList = useCallback((...items: { id: number; name: string }[]) => {
+    setItems(prevState => [...prevState, ...items]);
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TODO items={[...items]}>List of Items</TODO>
+      <AddItem addtoList={addToList}></AddItem>
     </div>
   );
-}
+};
 
 export default App;
